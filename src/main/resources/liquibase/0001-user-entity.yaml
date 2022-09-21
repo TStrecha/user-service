@@ -18,10 +18,13 @@ databaseChangeLog:
             name: global_role
             type: VARCHAR(255)
         - column:
+            name: name
+            type: VARCHAR(255)
+        - column:
             constraints:
               nullable: false
             name: password
-            type: VARCHAR(255)
+            type: TEXT
         - column:
             constraints:
               nullable: false
@@ -57,12 +60,12 @@ databaseChangeLog:
         - column:
             constraints:
               nullable: false
-            name: is_confirmed
+            name: is_primary
             type: BOOLEAN
         - column:
             constraints:
               nullable: false
-            name: is_primary
+            name: is_private
             type: BOOLEAN
         - column:
             constraints:
@@ -134,6 +137,30 @@ databaseChangeLog:
     id: 0001-user-entity-8
     author: tstrecha
     changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: confirmation_pkey
+            name: contact_id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: confirmation_key
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: confirmation_state
+            type: VARCHAR(255)
+        tableName: confirmation
+- changeSet:
+    id: 0001-user-entity-9
+    author: tstrecha
+    changes:
     - addForeignKeyConstraint:
         baseColumnNames: user_id
         baseTableName: contact
@@ -144,5 +171,20 @@ databaseChangeLog:
         onUpdate: NO ACTION
         referencedColumnNames: id
         referencedTableName: user
+        validate: true
+- changeSet:
+    id: 0001-user-entity-10
+    author: tstrecha
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: contact_id
+        baseTableName: confirmation
+        constraintName: fknmxi9t4afst3kpbmv3440g7p9
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: contact
         validate: true
 
