@@ -1,14 +1,14 @@
 package cz.thomas.messagingapp.userservice.model;
 
-import cz.thomas.messagingapp.userservice.constants.GlobalRoleType;
+import cz.thomas.messagingapp.userservice.constants.ConfirmationState;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -16,22 +16,19 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "`user`")
-public class UserEntity {
+@Entity(name = "confirmation")
+public class ConfirmationEntity {
 
-    private static final String SEQUENCE_NAME = "user_sequence";
+    private static final String SEQUENCE_NAME = "confirmation_sequence";
 
     @Id
     @SequenceGenerator(name = SEQUENCE_NAME, sequenceName = SEQUENCE_NAME, allocationSize = 1)
@@ -40,23 +37,16 @@ public class UserEntity {
     @Access(AccessType.PROPERTY)
     private Long id;
 
-    @Column(nullable = false, unique = true, updatable = false)
-    private String username;
+    @OneToOne(cascade = CascadeType.MERGE)
+    @MapsId
+    @JoinColumn(name = "contact_id")
+    private ContactEntity contact;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
-    private String password;
-
-    private String name;
-
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private GlobalRoleType globalRole = GlobalRoleType.USER;
+    private ConfirmationState confirmationState;
 
-    @OneToMany(mappedBy = "user")
-    private List<ContactEntity> contacts = new ArrayList<>();
-
-    @CreationTimestamp
     @Column(nullable = false)
-    private OffsetDateTime registeredAt;
+    private String confirmationKey;
 
 }

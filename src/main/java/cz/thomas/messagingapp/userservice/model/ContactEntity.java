@@ -17,6 +17,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -49,11 +50,11 @@ public class ContactEntity {
     @Column(nullable = false)
     private String value;
 
-    @Column(nullable = false)
-    private boolean isConfirmed = false;
+    @Column(nullable = false, name = "isPrimary")
+    private boolean primary = false;
 
-    @Column(nullable = false)
-    private boolean isPrimary = false;
+    @Column(nullable = false, name = "isPrivate")
+    private boolean secret = true;
 
     @ManyToOne(optional = false)
     private UserEntity user;
@@ -64,4 +65,6 @@ public class ContactEntity {
 
     private OffsetDateTime confirmedAt;
 
+    @OneToOne(mappedBy = "contact")
+    private ConfirmationEntity confirmation;
 }

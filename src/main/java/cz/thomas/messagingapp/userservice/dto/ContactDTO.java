@@ -20,9 +20,11 @@ public class ContactDTO {
 
     private String value;
 
-    private boolean isConfirmed;
+    private boolean confirmed;
 
-    private boolean isPrimary;
+    private boolean primary;
+
+    private boolean secret;
 
     private OffsetDateTime createdAt;
 
