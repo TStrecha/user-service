@@ -1,0 +1,148 @@
+databaseChangeLog:
+- changeSet:
+    id: 0001-user-entity-1
+    author: tstrecha
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: user_pkey
+            name: id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: global_role
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: password
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: registered_at
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            constraints:
+              nullable: false
+            name: username
+            type: VARCHAR(255)
+        tableName: user
+- changeSet:
+    id: 0001-user-entity-2
+    author: tstrecha
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: contact_pkey
+            name: id
+            type: BIGINT
+        - column:
+            name: confirmed_at
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            constraints:
+              nullable: false
+            name: created_at
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            constraints:
+              nullable: false
+            name: is_confirmed
+            type: BOOLEAN
+        - column:
+            constraints:
+              nullable: false
+            name: is_primary
+            type: BOOLEAN
+        - column:
+            constraints:
+              nullable: false
+            name: type
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: value
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: user_id
+            type: BIGINT
+        tableName: contact
+- changeSet:
+    id: 0001-user-entity-3
+    author: tstrecha
+    changes:
+    - addUniqueConstraint:
+        columnNames: username
+        constraintName: uk_sb8bbouer5wak8vyiiy4pf2bx
+        tableName: user
+- changeSet:
+    id: 0001-user-entity-4
+    author: tstrecha
+    changes:
+    - addUniqueConstraint:
+        columnNames: is_primary, user_id, type
+        constraintName: unique_type_primary
+        tableName: contact
+- changeSet:
+    id: 0001-user-entity-5
+    author: tstrecha
+    changes:
+    - addUniqueConstraint:
+        columnNames: value, type
+        constraintName: unique_value
+        tableName: contact
+- changeSet:
+    id: 0001-user-entity-6
+    author: tstrecha
+    changes:
+    - createSequence:
+        cacheSize: 1
+        cycle: false
+        dataType: bigint
+        incrementBy: 1
+        maxValue: 9223372036854775807
+        minValue: 1
+        sequenceName: contact_sequence
+        startValue: 1
+- changeSet:
+    id: 0001-user-entity-7
+    author: tstrecha
+    changes:
+    - createSequence:
+        cacheSize: 1
+        cycle: false
+        dataType: bigint
+        incrementBy: 1
+        maxValue: 9223372036854775807
+        minValue: 1
+        sequenceName: user_sequence
+        startValue: 1
+- changeSet:
+    id: 0001-user-entity-8
+    author: tstrecha
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: user_id
+        baseTableName: contact
+        constraintName: fk6bvjsduardbg5jq01n6wxiui2
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: user
+        validate: true
+
